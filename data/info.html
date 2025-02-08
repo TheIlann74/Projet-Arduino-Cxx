@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Données PM25 – RevolvAir.org</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    </head>
+    <body>
+        <h1>RevolvAir.org</h1>
+        <h3>The air you breathe</h3>
+        <div>
+            <ul class="menu">
+                <li><a href="/info">Info</a></li>
+                <li><a href="/pm25value">Qualité de l'air</a></li>
+            </ul>
+        </div>
+        <h2>Information de l'appareil</h2>
+        <div id="DeviceInfo" width="400" height="100"></div>
+            <ul>
+                <li>Mac ID: <span id="MacID"></span></li>
+                <li>Chip ID: <span id="ChipID"></span></li>
+                <li>SSID: <span id="SSID"></span></li>
+                <li>RSSI: <span id="RSSI"></span></li>
+            </ul>
+            <script>
+                // Exécution à toutes les 2 secondes.
+                setInterval(function() { getData(); }, 2000);
+
+                // Récupère le contenu de la requête XHR et l'entrepose dans div.DeviceInfo
+                function getData() {
+                    var xhttp = new XMLHttpRequest();
+
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            var data = JSON.parse(this.responseText);
+                            document.getElementById("MacID").innerHTML = data.macid;
+                            document.getElementById("ChipID").innerHTML = data.chipid;
+                            document.getElementById("SSID").innerHTML = data.ssid;
+                            document.getElementById("RSSI").innerHTML = data.rssi;
+                        }
+                    };
+                    xhttp.open("GET", "readDeviceInfo", true);
+                    xhttp.send();
+                }
+            </script>
+        <div class="footer">
+            <a href="https://RevolvAir.org">RevolvAir.org</a>
+        </div>
+    </body>
+</html>
